@@ -1,14 +1,13 @@
 {
   "files": {
-    "main.css": "/cs130-development/static/css/main.073c9b0a.css",
-    "main.js": "/cs130-development/static/js/main.5d5c032e.js",
-    "static/media/logo.svg": "/cs130-development/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "main.css": "/cs130-development/static/css/main.e6c13ad2.css",
+    "main.js": "/cs130-development/static/js/main.bb8dd1e7.js",
     "index.html": "/cs130-development/index.html",
-    "main.073c9b0a.css.map": "/cs130-development/static/css/main.073c9b0a.css.map",
-    "main.5d5c032e.js.map": "/cs130-development/static/js/main.5d5c032e.js.map"
+    "main.e6c13ad2.css.map": "/cs130-development/static/css/main.e6c13ad2.css.map",
+    "main.bb8dd1e7.js.map": "/cs130-development/static/js/main.bb8dd1e7.js.map"
   },
   "entrypoints": [
-    "static/css/main.073c9b0a.css",
-    "static/js/main.5d5c032e.js"
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.bb8dd1e7.js"
   ]
 }
