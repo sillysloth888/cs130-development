@@ -14,10 +14,11 @@ export default function AlbumItem({ item, handleClick }) {
         id, 
         albumName,
         artists,
-        year, 
+        date, 
         length, 
         totalTracks, 
         popularity, 
+        explicit,
         imageSrc 
     } = item
 
@@ -41,14 +42,17 @@ export default function AlbumItem({ item, handleClick }) {
                             fontSize: '1rem', 
                             fontWeight: 'bold',
                         }}>
-                            {artists} • {year}
+                            {artists} • {date.substr(0, 4)}
                         </Typography>
                         <Typography>
                             {totalTracks} tracks, {length.min} min {length.sec} sec
                         </Typography>  
                 </CardContent>  
                 <CardActions>
-                    <Button onClick={() => handleClick(item)}>Add to queue</Button>
+                    <Button 
+                        onClick={() => handleClick(item)}
+                        color="secondary"
+                    >Add to queue</Button>
                 </CardActions>
         </Card>
     )}
