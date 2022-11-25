@@ -27,6 +27,7 @@ function App() {
       (totalLength, track) => totalLength + (track.duration_ms / 1000),
       0
     )
+
     return {
       id: item.id,
       albumName: item.name, 
@@ -38,7 +39,7 @@ function App() {
       },
       totalTracks: item.total_tracks,
       popularity: item.popularity, 
-      explicit: item.explicit,
+      explicit: item.tracks.items.some(track =>track.explicit),
       imageSrc: item.images[0].url
     }
   }
@@ -62,6 +63,7 @@ function App() {
   }
 
   var albums = spotifyData.albums.map(album => makeAlbumObj(album))
+  console.log(albums)
   // adapted from https://stackoverflow.com/questions/8864430/compare-javascript-array-of-objects-to-get-min-max
   const minDate = parseInt(albums.reduce(function(prev, curr) {
       return prev.date < curr.date ? prev : curr;
@@ -82,6 +84,18 @@ function App() {
     albums.sort((a, b) => a.popularity > b.popularity ? -1 : 1) 
   }
 
+  const[checked, setChecked] = useState(true)
+
+  const handleChecked = event => {
+    setChecked(event.target.checked)
+  }
+
+  if (!checked) {
+    albums = albums.filter((album) => (
+      !album.explicit
+    ))
+  }
+
   const [rangeValue, setRangeValue] = useState([minDate, maxDate]);
   albums = albums.filter((album) => (
     parseInt(album.date) >= rangeValue[0]) & (parseInt(album.date) <= rangeValue[1]
@@ -98,6 +112,7 @@ function App() {
           albums={albums}
           sortVal={sort} 
           handleSort={handleSort}
+          handleChecked={handleChecked}
           minDate={minDate}
           maxDate={maxDate}
           rangeValue={rangeValue}

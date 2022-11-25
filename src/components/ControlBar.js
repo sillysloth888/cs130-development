@@ -1,5 +1,4 @@
-
-import { FormControl, InputLabel, MenuItem, TextField, Box, Slider, Typography } from "@mui/material"
+import { FormControl, InputLabel, MenuItem, TextField, Box, Slider, Typography, FormControlLabel, Checkbox } from "@mui/material"
 import { useState } from "react"
 
 // component adapted from https://mui.com/material-ui/react-slider/
@@ -44,7 +43,7 @@ function DateSlider( { minDate, maxDate, rangeValue, handleRangeChange }) {
 }
   
 
-export default function ControlBar({ albums, sortVal, handleSort, minDate, maxDate, rangeValue, handleRangeChange }) {
+export default function ControlBar({ albums, sortVal, handleSort, handleChecked, minDate, maxDate, rangeValue, handleRangeChange }) {
     return (
         // adapted from https://mui.com/material-ui/react-select/
         <Box 
@@ -76,7 +75,13 @@ export default function ControlBar({ albums, sortVal, handleSort, minDate, maxDa
             rangeValue={rangeValue}
             handleRangeChange={handleRangeChange}
         />
+         <FormControlLabel 
+            control={<Checkbox 
+                color="secondary" 
+                defaultChecked
+                onChange={handleChecked}
+            />} 
+            label="Explicit Albums" />
     </Box>
-       
     )
 }
