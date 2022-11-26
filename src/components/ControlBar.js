@@ -43,7 +43,7 @@ function DateSlider( { minDate, maxDate, rangeValue, handleRangeChange }) {
 }
   
 
-export default function ControlBar({ albums, sortVal, handleSort, checked, handleChecked, minDate, maxDate, rangeValue, handleRangeChange, handleClear }) {
+export default function ControlBar({ sortVal, handleSort, checked, handleChecked, minDate, maxDate, rangeValue, handleRangeChange, handleClear }) {
     return (
         // adapted from https://mui.com/material-ui/react-select/
         <Box sx={{

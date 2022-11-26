@@ -128,7 +128,6 @@ function App() {
       <Grid xs={8} spacing={10}>
         <h1>Albums</h1> 
         <ControlBar 
-          albums={albums}
           sortVal={sort} 
           handleSort={handleSort}
           checked={checked}
