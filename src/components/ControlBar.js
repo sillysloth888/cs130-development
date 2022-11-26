@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, TextField, Box, Slider, Typography, FormControlLabel, Checkbox } from "@mui/material"
+import { FormControl, InputLabel, MenuItem, TextField, Box, Slider, Typography, FormControlLabel, Checkbox, Button } from "@mui/material"
 import { useState } from "react"
 
 // component adapted from https://mui.com/material-ui/react-slider/
@@ -43,45 +43,63 @@ function DateSlider( { minDate, maxDate, rangeValue, handleRangeChange }) {
 }
   
 
-export default function ControlBar({ albums, sortVal, handleSort, handleChecked, minDate, maxDate, rangeValue, handleRangeChange }) {
+export default function ControlBar({ albums, sortVal, handleSort, checked, handleChecked, minDate, maxDate, rangeValue, handleRangeChange, handleClear }) {
     return (
         // adapted from https://mui.com/material-ui/react-select/
-        <Box 
-            sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: "3rem"
-            }}
+        <Box sx={{
+            display: "flex",
+            flexDirection: "column", 
+        }}
         >
-            <FormControl
-            variant="standard"
-            sx={{ m: 1, minWidth: 120 }}
+            <Box 
+                sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: "3rem"
+                }}
             >
-            <TextField
-                select
-                value={sortVal}
-                onChange={handleSort}
-                label="Sort By"
-                color="secondary"
-            >
-                <MenuItem value={"newest"}>Newest</MenuItem>
-                <MenuItem value={"oldest"}>Oldest</MenuItem>
-                <MenuItem value={"popular"}>Most Popular</MenuItem>
-            </TextField>
-        </FormControl>
-        <DateSlider
-            minDate={parseInt(minDate)}
-            maxDate={parseInt(maxDate)}
-            rangeValue={rangeValue}
-            handleRangeChange={handleRangeChange}
-        />
-         <FormControlLabel 
-            control={<Checkbox 
-                color="secondary" 
-                defaultChecked
-                onChange={handleChecked}
-            />} 
-            label="Explicit Albums" />
-    </Box>
+                <FormControl
+                variant="standard"
+                sx={{ m: 1, minWidth: "9rem" }}
+                >
+                    <TextField
+                        select
+                        value={sortVal}
+                        onChange={handleSort}
+                        label="Sort By"
+                        color="secondary"
+                    >
+                        <MenuItem value={"newest"}>Newest</MenuItem>
+                        <MenuItem value={"oldest"}>Oldest</MenuItem>
+                        <MenuItem value={"popular"}>Most Popular</MenuItem>
+                    </TextField>
+                </FormControl>
+                <DateSlider
+                    minDate={parseInt(minDate)}
+                    maxDate={parseInt(maxDate)}
+                    rangeValue={rangeValue}
+                    handleRangeChange={handleRangeChange}
+                />
+                <FormControlLabel 
+                    control={<Checkbox 
+                        color="secondary" 
+                        checked={checked}
+                        onChange={handleChecked}
+                    />} 
+                    label="Include Explicit" 
+                />
+            </Box>
+            <Box sx={{
+                alignSelf: "flex-end"
+            }}>
+                <Button
+                    color="secondary"
+                    onClick={handleClear}
+                >
+                    Clear all
+                </Button>
+            </Box>
+        </Box>
     )
 }

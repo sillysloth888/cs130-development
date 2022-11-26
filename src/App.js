@@ -17,7 +17,7 @@ function App() {
       },
       secondary: {
         main: '#8d54ff',
-        contrastText: "#8d54ff"
+        contrastText: "#fff"
       },
     },
   })
@@ -44,8 +44,19 @@ function App() {
     }
   }
 
+  const [queue, setQueue] = useState({nextIndex: 0, items: []})
+
   function handleAddQueue(albumObj) {
-    setQueue([...queue, albumObj])
+    setQueue({
+      nextIndex: queue.nextIndex + 1, 
+      items: [...queue.items, {index: queue.nextIndex, album: albumObj}]})
+  }
+  
+  const handleRemoveQueue = (index) => () => {
+    setQueue({
+      nextIndex: queue.nextIndex,
+      items: queue.items.filter(queueItem => index != queueItem.index)
+    })
   }
 
   const handleSort = event => setSort(event.target.value)
@@ -62,27 +73,17 @@ function App() {
     }
   }
 
-  var albums = spotifyData.albums.map(album => makeAlbumObj(album))
-  console.log(albums)
+  const albums = spotifyData.albums.map(album => makeAlbumObj(album)).sort(
+    (a, b) =>  a.albumName > b.albumName ? 1 : -1) 
+  var filteredAlbums = Array.from(albums)
   // adapted from https://stackoverflow.com/questions/8864430/compare-javascript-array-of-objects-to-get-min-max
+  const minDistance = 5
   const minDate = parseInt(albums.reduce(function(prev, curr) {
       return prev.date < curr.date ? prev : curr;
   }).date.substr(0, 4))
   const maxDate = parseInt(albums.reduce(function(prev, curr) {
       return prev.date > curr.date ? prev : curr;
   }).date.substr(0, 4))
-  const minDistance = 5
-
-  const [queue, setQueue] = useState([])
-  const [sort, setSort] = useState("")
-
-  if (sort === "newest") {
-    albums.sort((a, b) => a.date < b.date ? 1 : -1) 
-  } else if (sort === "oldest") {
-    albums.sort((a, b) => a.date > b.date ? 1 : -1) 
-  } else if (sort === "popular") {
-    albums.sort((a, b) => a.popularity > b.popularity ? -1 : 1) 
-  }
 
   const[checked, setChecked] = useState(true)
 
@@ -91,16 +92,34 @@ function App() {
   }
 
   if (!checked) {
-    albums = albums.filter((album) => (
+    filteredAlbums = filteredAlbums.filter((album) => (
       !album.explicit
     ))
   }
 
   const [rangeValue, setRangeValue] = useState([minDate, maxDate]);
-  albums = albums.filter((album) => (
+  filteredAlbums = filteredAlbums.filter((album) => (
     parseInt(album.date) >= rangeValue[0]) & (parseInt(album.date) <= rangeValue[1]
     )
   )
+
+  const [sort, setSort] = useState("")
+
+  if (sort === "newest") {
+    filteredAlbums.sort((a, b) => a.date < b.date ? 1 : -1) 
+  } else if (sort === "oldest") {
+    filteredAlbums.sort((a, b) => a.date > b.date ? 1 : -1) 
+  } else if (sort === "popular") {
+    filteredAlbums.sort((a, b) => a.popularity > b.popularity ? -1 : 1) 
+  }
+
+  const handleClear = () => {
+    filteredAlbums = Array.from(albums)
+    setRangeValue([minDate, maxDate])
+    setSort("")
+    setChecked(true)
+  }
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -112,14 +131,16 @@ function App() {
           albums={albums}
           sortVal={sort} 
           handleSort={handleSort}
+          checked={checked}
           handleChecked={handleChecked}
           minDate={minDate}
           maxDate={maxDate}
           rangeValue={rangeValue}
           handleRangeChange={handleRangeChange}
+          handleClear={handleClear}
         />
         <Grid container spacing={2}>
-          {albums.map((item, index) => ( 
+          {filteredAlbums.map((item, index) => ( 
             <Grid key={index} xs={4}>
               <AlbumItem 
                 item={item}
@@ -133,6 +154,7 @@ function App() {
           <h2>Queue</h2>
           <Queue 
             queue={queue}
+            handleRemoveQueue={handleRemoveQueue}
           />
         </Grid>
     </Grid>

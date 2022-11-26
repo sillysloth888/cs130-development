@@ -1,10 +1,11 @@
-import { Box, Typography, List, ListItem, Paper } from "@mui/material";
+import { Box, Typography, List, ListItem, Paper, Icon, Button, Fab } from "@mui/material";
+import RemoveIcon from '@mui/icons-material/Remove';
 
-export default function Queue({ queue }) {
+export default function Queue({ queue, handleRemoveQueue }) {
     const queueLength = {
-        sec: queue.reduce(
-            (totalLength, album) => 
-                (totalLength + album.length.min * 60 + album.length.sec),
+        sec: queue.items.reduce(
+            (totalLength, queueItem) => 
+                (totalLength + queueItem.album.length.min * 60 + queueItem.album.length.sec),
         0
     )
     }
@@ -43,9 +44,9 @@ export default function Queue({ queue }) {
             <List
                 variant="outlined"
             >
-                {queue.map((album, index) => (
+                {queue.items.map((queueItem) => (
                     <ListItem 
-                        key={index}
+                        key={queueItem.index}
                     >
                         <Paper
                             sx={{
@@ -57,20 +58,35 @@ export default function Queue({ queue }) {
                         >
                         <Box 
                             component="img"
-                            src={album.imageSrc}
-                            alt={`${album.albumName} album cover`}
+                            src={queueItem.album.imageSrc}
+                            alt={`${queueItem.album.albumName} album cover`}
                             sx={{
                                 width: "6rem", 
                                 height: "6rem"
                             }}
                         />
-                        <Box>
+                        <Box sx={{
+                            display: "flex", 
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            width: 1,
+                            px: "2rem"
+                        }}
+                        >
                             <Typography sx={{
                                 fontStyle:"italic"
                             }}>
-                                {album.albumName}
+                                {queueItem.album.albumName}
                             </Typography>
-                            
+                            <Fab 
+                                color="secondary" 
+                                id={queueItem.album.name}
+                                size="small"
+                                aria-label="remove"
+                                onClick={handleRemoveQueue(queueItem.index)}
+                            >
+                                <RemoveIcon />
+                            </Fab>
                         </Box>
                         </Paper>
                     </ListItem>
