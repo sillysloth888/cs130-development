@@ -97,6 +97,7 @@ const App = () => {
   const [queue, setQueue] = useState({nextIndex: 0, items: []})
   const [checked, setChecked] = useState(true)
   const [sort, setSort] = useState("")
+  const [rangeValue, setRangeValue] = useState([minDate, maxDate])
   
   if (!checked) {
     filteredAlbums = filteredAlbums.filter((album) => (
@@ -104,7 +105,6 @@ const App = () => {
     ))
   }
 
-  const [rangeValue, setRangeValue] = useState([minDate, maxDate])
   filteredAlbums = filteredAlbums.filter((album) => (
     parseInt(album.date) >= rangeValue[0]) & (parseInt(album.date) <= rangeValue[1]
     )
@@ -146,7 +146,7 @@ const App = () => {
             ))}
           </Grid>
         </Grid>
-        <Grid xs>
+        <Grid xs pt={8}>
           <Queue 
               queue={queue}
               handleRemoveQueue={handleRemoveQueue}
