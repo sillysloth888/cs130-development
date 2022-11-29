@@ -14,6 +14,16 @@ import {
             alt={`${item.albumName} album cover`}
         />
         <CardContent>
+                    {item.explicit ? (
+                        <Typography 
+                            fontSize="0.8rem" 
+                            fontStyle="italic"
+                            color="#6a6b6b"
+                        >
+                            EXPLICIT
+                        </Typography>)
+                        : (<></>)
+                    }
                     <Typography sx={{ 
                         fontSize: 'h6.fontSize', 
                         fontWeight: 'bold',
