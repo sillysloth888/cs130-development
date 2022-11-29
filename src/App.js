@@ -120,6 +120,21 @@ function App() {
     setChecked(true)
   }
 
+  const handleLengthFilter = (filterType) => () => {
+    if (lengthFilter[filterType]) {
+      setLengthFilter(({ [filterType]: false, ...rest }))
+    } else {
+      setLengthFilter(({ [filterType]: true, ...rest }))
+    }
+  }
+
+  const [lengthFilter, setLengthFilter] = useState({
+    "0-0.5": false, 
+    "0.5-1": false, 
+    "1-2": false, 
+    ">2": false
+  })
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -136,6 +151,8 @@ function App() {
           maxDate={maxDate}
           rangeValue={rangeValue}
           handleRangeChange={handleRangeChange}
+          lengthFilter={lengthFilter}
+          handleLengthFilter={handleLengthFilter}
           handleClear={handleClear}
         />
         <Grid container spacing={2}>

@@ -1,8 +1,8 @@
 import { FormControl, InputLabel, MenuItem, TextField, Box, Slider, Typography, FormControlLabel, Checkbox, Button } from "@mui/material"
 import { useState } from "react"
 
-// component adapted from https://mui.com/material-ui/react-slider/
-function DateSlider( { minDate, maxDate, rangeValue, handleRangeChange }) {
+// slider omponent adapted from https://mui.com/material-ui/react-slider/
+function RangeSlider( { min, max, rangeValue, handleRangeChange }) {
     function valuetext(value) {
         return `${value}°C`;
       }
@@ -21,8 +21,8 @@ function DateSlider( { minDate, maxDate, rangeValue, handleRangeChange }) {
                 value={rangeValue}
                 onChange={handleRangeChange}
                 getAriaValueText={valuetext}
-                min={minDate}
-                max={maxDate}
+                min={min}
+                max={max}
                 disableSwap
                 color="secondary"
                 valueLabelDisplay="off"
@@ -44,8 +44,8 @@ function DateSlider( { minDate, maxDate, rangeValue, handleRangeChange }) {
   
 
 export default function ControlBar({ sortVal, handleSort, checked, handleChecked, minDate, maxDate, rangeValue, handleRangeChange, handleClear }) {
+    const lengthFilterTypes = ["0-0.5", "0.5-1", "1-2", ">2"]
     return (
-        // adapted from https://mui.com/material-ui/react-select/
         <Box sx={{
             display: "flex",
             flexDirection: "column", 
@@ -59,6 +59,7 @@ export default function ControlBar({ sortVal, handleSort, checked, handleChecked
                     gap: "3rem"
                 }}
             >
+                {/* select component adapted from https://mui.com/material-ui/react-select/ */}
                 <FormControl
                 variant="standard"
                 sx={{ m: 1, minWidth: "9rem" }}
@@ -75,9 +76,9 @@ export default function ControlBar({ sortVal, handleSort, checked, handleChecked
                         <MenuItem value={"popular"}>Most Popular</MenuItem>
                     </TextField>
                 </FormControl>
-                <DateSlider
-                    minDate={parseInt(minDate)}
-                    maxDate={parseInt(maxDate)}
+                <RangeSlider
+                    min={parseInt(minDate)}
+                    max={parseInt(maxDate)}
                     rangeValue={rangeValue}
                     handleRangeChange={handleRangeChange}
                 />
@@ -86,9 +87,20 @@ export default function ControlBar({ sortVal, handleSort, checked, handleChecked
                         color="secondary" 
                         checked={checked}
                         onChange={handleChecked}
-                    />} 
+                />} 
                     label="Include Explicit" 
                 />
+                <Box>
+                    {lengthFilterTypes.map(filterKey => (
+                        <FormControlLabel 
+                            control={<Checkbox 
+                                color="secondary" 
+                                checked={checked}
+                                onChange={handleChecked}
+                            />} 
+                            label={filterKey}
+                        />))}
+                </Box>
             </Box>
             <Box sx={{
                 alignSelf: "flex-end"
