@@ -16,15 +16,15 @@ Visual Hierarchy:
  - Control bar with sorting and filter options only extends the length of the album grid, indicating that sorting/filtering will only occur on the main aggregator objects (not the queue). 
  
 Visual Design: 
- - Album items are displayed as squares organized into a grid, while queue items are displayed as rectangels organized into a list in order to create visual distinction between the sections. 
+ - Album items are displayed as squares organized into a grid, while queue items are displayed as rectangles organized into a list in order to create visual distinction between the sections. 
  - Purple is used to accent elements on the site that can be interacted with, such as the buttons to add and remove items from the queue, the sliders, and the checkboxes when they are checked. 
 
 
 ### Organization of Components
-I created 6 total components. 
+I created 6 components in total. 
 - `App` handles the main logic of the application, and contains all of the other components I created. 
 - `AlbumItem` is the album card in the aggregator, and displays the album cover, name, artists, number of tracks, and runtime. It also contains the button to add an item to the queue. In the App component, a map function is applied to a list of albums to create each `AlbumItem`.
-- `ControlBar` contains a dropdown menu for sorting, a range slider to filter by date, and a checkbox to include explicit content. The 'ControlBar` component contains the `DoubleRangeSlider` component
+- `ControlBar` contains a dropdown menu for sorting, a range slider to filter by date, and a checkbox to include explicit content. The `ControlBar` component contains the `DoubleRangeSlider` component
 - `DoubleRangeSlider` contains the range slider used to filter by date. It was adapted from an example in the Material UI React documentation. 
 - `Queue` contains the entire queue, including the title and total runtime elements, as well as the list of QueueItems which makes up the queue. 
 - `QueueItem` displays an single album in the queue, showing the album's cover and name. It also contains a button that allows you to remove items from the queue. In the Queue component, a map function is applied to the `queue` state to create each `QueueItem`
