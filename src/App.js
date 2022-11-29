@@ -4,25 +4,25 @@ import AlbumItem from './components/AlbumItem'
 import ControlBar from "./components/ControlBar"
 import Queue from './components/Queue'
 import Grid from '@mui/material/Unstable_Grid2'
-import { Box, createTheme, CssBaseline, Paper, ThemeProvider, Typography } from "@mui/material"
+import { 
+  createTheme, 
+  CssBaseline, 
+  ThemeProvider,
+} from "@mui/material"
 
-function App() {
+const App = () => {
   const theme = createTheme({
     palette: {
       mode: 'dark',
       type: 'dark',
       primary: {
-        main: '#1f1e21',
-        contrastText: "#8d54ff",
-      },
-      secondary: {
-        main: '#8d54ff',
-        contrastText: "#fff"
+        main: "#8d54ff",
+        contrastText: "#fff",
       },
     },
   })
 
-  function makeAlbumObj(item) {
+  const makeAlbumObj = (item) => {
     const lengthSec = item.tracks.items.reduce(
       (totalLength, track) => totalLength + (track.duration_ms / 1000),
       0
@@ -44,9 +44,7 @@ function App() {
     }
   }
 
-  const [queue, setQueue] = useState({nextIndex: 0, items: []})
-
-  function handleAddQueue(albumObj) {
+  const handleAddQueue = (albumObj) => {
     setQueue({
       nextIndex: queue.nextIndex + 1, 
       items: [...queue.items, {index: queue.nextIndex, album: albumObj}]})
@@ -55,7 +53,7 @@ function App() {
   const handleRemoveQueue = (index) => () => {
     setQueue({
       nextIndex: queue.nextIndex,
-      items: queue.items.filter(queueItem => index != queueItem.index)
+      items: queue.items.filter(queueItem => index !== queueItem.index)
     })
   }
 
@@ -63,7 +61,7 @@ function App() {
 
   const handleRangeChange = (event, newValue, activeThumb) => {
     if (!Array.isArray(newValue)) {
-      return;
+      return
     }
 
     if (activeThumb === 0) {
@@ -71,6 +69,17 @@ function App() {
     } else {
       setRangeValue([rangeValue[0], Math.max(newValue[1], rangeValue[0] + minDistance)]);
     }
+  }
+
+  const handleChecked = event => {
+    setChecked(event.target.checked)
+  }
+
+  const handleClear = () => {
+    filteredAlbums = Array.from(albums)
+    setRangeValue([minDate, maxDate])
+    setSort("")
+    setChecked(true)
   }
 
   const albums = spotifyData.albums.map(album => makeAlbumObj(album)).sort(
@@ -85,25 +94,21 @@ function App() {
       return prev.date > curr.date ? prev : curr;
   }).date.substr(0, 4))
 
-  const[checked, setChecked] = useState(true)
-
-  const handleChecked = event => {
-    setChecked(event.target.checked)
-  }
-
+  const [queue, setQueue] = useState({nextIndex: 0, items: []})
+  const [checked, setChecked] = useState(true)
+  const [sort, setSort] = useState("")
+  
   if (!checked) {
     filteredAlbums = filteredAlbums.filter((album) => (
       !album.explicit
     ))
   }
 
-  const [rangeValue, setRangeValue] = useState([minDate, maxDate]);
+  const [rangeValue, setRangeValue] = useState([minDate, maxDate])
   filteredAlbums = filteredAlbums.filter((album) => (
     parseInt(album.date) >= rangeValue[0]) & (parseInt(album.date) <= rangeValue[1]
     )
   )
-
-  const [sort, setSort] = useState("")
 
   if (sort === "newest") {
     filteredAlbums.sort((a, b) => a.date < b.date ? 1 : -1) 
@@ -113,52 +118,43 @@ function App() {
     filteredAlbums.sort((a, b) => a.popularity > b.popularity ? -1 : 1) 
   }
 
-  const handleClear = () => {
-    filteredAlbums = Array.from(albums)
-    setRangeValue([minDate, maxDate])
-    setSort("")
-    setChecked(true)
-  }
-
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline/>
       <Grid container spacing={4} sx={{px: 12, py: 2}}>
-      <Grid xs={8} spacing={10}>
-        <h1>Albums</h1> 
-        <ControlBar 
-          sortVal={sort} 
-          handleSort={handleSort}
-          checked={checked}
-          handleChecked={handleChecked}
-          minDate={minDate}
-          maxDate={maxDate}
-          rangeValue={rangeValue}
-          handleRangeChange={handleRangeChange}
-          handleClear={handleClear}
-        />
-        <Grid container spacing={2}>
-          {filteredAlbums.map((item, index) => ( 
-            <Grid key={index} xs={4}>
-              <AlbumItem 
-                item={item}
-                handleClick={handleAddQueue}
-              />
-            </Grid> 
-          ))}
+        <Grid xs={8} spacing={10}>
+          <h1>Albums</h1> 
+          <ControlBar 
+            sortVal={sort} 
+            handleSort={handleSort}
+            checked={checked}
+            handleChecked={handleChecked}
+            minDate={minDate}
+            maxDate={maxDate}
+            rangeValue={rangeValue}
+            handleRangeChange={handleRangeChange}
+            handleClear={handleClear}
+          />
+          <Grid container spacing={2}>
+            {filteredAlbums.map((item, index) => ( 
+              <Grid key={index} xs={4}>
+                <AlbumItem 
+                  item={item}
+                  handleClick={handleAddQueue}
+                />
+              </Grid> 
+            ))}
+          </Grid>
         </Grid>
-      </Grid>
         <Grid xs>
-          <h2>Queue</h2>
           <Queue 
-            queue={queue}
-            handleRemoveQueue={handleRemoveQueue}
+              queue={queue}
+              handleRemoveQueue={handleRemoveQueue}
           />
         </Grid>
     </Grid>
     </ThemeProvider> 
-  );
+  )
 }
 
-export default App;
+export default App
