@@ -6,6 +6,7 @@ import {
 } from "@mui/material";
 import QueueItem from "./QueueItem";
 
+// aggregator Component
 const Queue = ({ queue, handleRemoveQueue }) => {
     const queueLength = {
         sec: queue.items.reduce(
@@ -38,6 +39,7 @@ const Queue = ({ queue, handleRemoveQueue }) => {
     return (    
         <Box>
             <h2>Queue</h2>
+            {/* Display the aggregated value (total runtime) */}
             {queueLength.sec ? 
                 (<Typography fontStyle="italic">
                     Runtime: {displayLength}
@@ -49,6 +51,7 @@ const Queue = ({ queue, handleRemoveQueue }) => {
             <List
                 variant="outlined"
             >
+                {/* Display the items in the aggregator */}
                 {queue.items.map((queueItem) => (
                     <ListItem 
                         key={queueItem.index}

@@ -44,12 +44,14 @@ const App = () => {
     }
   }
 
+  // function for adding items to the queue
   const handleAddQueue = (albumObj) => {
     setQueue({
       nextIndex: queue.nextIndex + 1, 
       items: [...queue.items, {index: queue.nextIndex, album: albumObj}]})
   }
   
+  // function for removing items to the queue
   const handleRemoveQueue = (index) => () => {
     setQueue({
       nextIndex: queue.nextIndex,
@@ -75,6 +77,8 @@ const App = () => {
     setChecked(event.target.checked)
   }
 
+
+  // function to reset the items
   const handleClear = () => {
     filteredAlbums = Array.from(albums)
     setRangeValue([minDate, maxDate])
@@ -94,10 +98,24 @@ const App = () => {
       return prev.date > curr.date ? prev : curr;
   }).date.substr(0, 4))
 
-  const [queue, setQueue] = useState({nextIndex: 0, items: []})
+  /*
+   state that controls the checkbox for filtering explicit albums (filtering category 1)
+  
+   note: by default the checkbox is checked (to show all the albums, including explicit ones), so the filtering works opposite of the TA example app. 
+   so when the "Clear All" button is hit to reset the times, we want to return the checkbox to the checked state
+   */
   const [checked, setChecked] = useState(true)
-  const [sort, setSort] = useState("")
+  // state that controls the range of years for filtering by release date (filtering category 2)
   const [rangeValue, setRangeValue] = useState([minDate, maxDate])
+  /* 
+  state that controls which sorting option has been selected 
+  (an empty string "" represents that no sorting option has been selected)
+  */
+  const [sort, setSort] = useState("")
+  
+  // state for the list of the items in the aggregator
+  const [queue, setQueue] = useState({nextIndex: 0, items: []})
+
   
   if (!checked) {
     filteredAlbums = filteredAlbums.filter((album) => (
@@ -138,6 +156,7 @@ const App = () => {
           <Grid container spacing={2}>
             {filteredAlbums.map((item, index) => ( 
               <Grid key={index} xs={4}>
+                {/* AlbumItem is Component for the items */}
                 <AlbumItem 
                   item={item}
                   handleClick={handleAddQueue}
@@ -147,6 +166,7 @@ const App = () => {
           </Grid>
         </Grid>
         <Grid xs pt={8}>
+          {/* Queue is Component for the agreggator */}
           <Queue 
               queue={queue}
               handleRemoveQueue={handleRemoveQueue}
